@@ -5,10 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simpleprojects.scheduleproject.dto.RequestDto;
 import simpleprojects.scheduleproject.dto.ResponseDto;
+import simpleprojects.scheduleproject.dto.ResponseListMessageDto;
+import simpleprojects.scheduleproject.dto.ResponseMessageDto;
 import simpleprojects.scheduleproject.entity.Schedule;
 import simpleprojects.scheduleproject.repository.ScheduleRepository;
+import simpleprojects.scheduleproject.status.HttpMessage;
+import simpleprojects.scheduleproject.status.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -20,45 +25,87 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public List<ResponseDto> getSchedules() {
-        return scheduleRepository.findAllByOrderByCreatedAtDesc().
-                stream().map(ResponseDto::new).toList();
+    public ResponseListMessageDto getSchedules() {
+        return new ResponseListMessageDto(HttpStatus.HTTP_STATUS_OK, HttpMessage.CHECK_SUCCESS,
+                scheduleRepository.findAllByOrderByCreatedAtDesc().stream().map(ResponseDto::new)
+                        .toList());
     }
 
-    public ResponseDto registerSchedule(RequestDto requestDto) {
+    public ResponseMessageDto registerSchedule(RequestDto requestDto) {
         Schedule schedule = new Schedule(requestDto);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
-        return new ResponseDto(savedSchedule);
+        return new ResponseMessageDto(HttpStatus.HTTP_STATUS_CREATE,HttpMessage.CREATE_SUCCESS,
+                new ResponseDto(savedSchedule));
     }
 
-    public ResponseDto selectSchedule(Long id, String password) {
-        Schedule findSchedule = findById(id); // 해당 데이터베이스에 id가 있는지 찾아주고 반환
+    public ResponseMessageDto selectSchedule(Long id, String password) {
+        Schedule findSchedule = null;
 
-        passwordCheck(findSchedule,password);  // 비밀번호 유무를 통해 비밀번호가 있으면 체크 (비밀번호가 맞지않으면 예외)
+        try {
+            findSchedule = findById(id);
+            passwordCheck(findSchedule,password);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
 
-        return new ResponseDto(findSchedule);
+            if(e.getMessage().equals("해당 데이터가 존재하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_NOT_FOUND, HttpMessage.NOT_FOUND,
+                        null);
+            else if(e.getMessage().equals("비밀번호가 일치하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_BAD_REQUEST, HttpMessage.PASSWORD_ERROR,
+                        null);
+        }
+
+        return new ResponseMessageDto(HttpStatus.HTTP_STATUS_OK,HttpMessage.CHECK_SUCCESS,
+                new ResponseDto(findSchedule));
     }
 
-    public String deleteSchedule(Long id, String password) {
-        Schedule findSchedule = findById(id);
+    public ResponseMessageDto deleteSchedule(Long id, String password) {
+        Schedule findSchedule = null;
 
-        passwordCheck(findSchedule,password);
+        try {
+            findSchedule = findById(id);
+            passwordCheck(findSchedule,password);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+
+            if(e.getMessage().equals("해당 데이터가 존재하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_NOT_FOUND, HttpMessage.NOT_FOUND,
+                        null);
+            else if(e.getMessage().equals("비밀번호가 일치하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_BAD_REQUEST, HttpMessage.PASSWORD_ERROR,
+                        null);
+        }
 
         scheduleRepository.delete(findSchedule);
 
-        return "일정 관리가 삭제되었습니다.";
+        return new ResponseMessageDto(HttpStatus.HTTP_STATUS_OK,HttpMessage.DELETE,
+                new ResponseDto(findSchedule));
     }
 
     @Transactional
-    public ResponseDto updateSchedule(Long id, RequestDto requestDto) {
-        Schedule findSchedule = findById(id);
-        passwordCheck(findSchedule,requestDto.getPassword());
+    public ResponseMessageDto updateSchedule(Long id, RequestDto requestDto) {
+        Schedule findSchedule = null;
+
+        try {
+            findSchedule = findById(id);
+            passwordCheck(findSchedule,requestDto.getPassword());
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+
+            if(e.getMessage().equals("해당 데이터가 존재하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_NOT_FOUND, HttpMessage.NOT_FOUND,
+                    null);
+            else if(e.getMessage().equals("비밀번호가 일치하지 않습니다."))
+                return new ResponseMessageDto(HttpStatus.HTTP_STATUS_BAD_REQUEST, HttpMessage.PASSWORD_ERROR,
+                        null);
+        }
 
         findSchedule.updateSchedule(requestDto);
 
-        return new ResponseDto(findSchedule);
+        return new ResponseMessageDto(HttpStatus.HTTP_STATUS_OK, HttpMessage.UPDATE_SCHEDULE,
+                new ResponseDto(findSchedule));
     }
 
 
@@ -77,4 +124,5 @@ public class ScheduleService {
 
         throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
+
 }
