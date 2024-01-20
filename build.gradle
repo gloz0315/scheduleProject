@@ -26,7 +26,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // MySQL
-    implementation 'mysql:mysql-connector-java:8.0.28'
+    implementation 'mysql:mysql-connector-java'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
