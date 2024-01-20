@@ -12,9 +12,6 @@ import simpleprojects.scheduleproject.repository.ScheduleRepository;
 import simpleprojects.scheduleproject.status.HttpMessage;
 import simpleprojects.scheduleproject.status.HttpStatus;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ScheduleService {
 
