@@ -3,12 +3,9 @@ package simpleprojects.scheduleproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import simpleprojects.scheduleproject.dto.RequestDto;
-import simpleprojects.scheduleproject.dto.ResponseDto;
 import simpleprojects.scheduleproject.dto.ResponseListMessageDto;
 import simpleprojects.scheduleproject.dto.ResponseMessageDto;
 import simpleprojects.scheduleproject.service.ScheduleService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")

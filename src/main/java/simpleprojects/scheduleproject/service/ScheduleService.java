@@ -98,7 +98,7 @@ public class ScheduleService {
             e.printStackTrace();
 
             if(e.getMessage().equals("해당 데이터가 존재하지 않습니다."))
-                return new ResponseMessageDto(HttpStatus.BAD_REQUEST, HttpMessage.NOT_FOUND,
+                return new ResponseMessageDto(HttpStatus.NOT_FOUND, HttpMessage.NOT_FOUND,
                         null);
 
             return new ResponseMessageDto(HttpStatus.BAD_REQUEST, HttpMessage.PASSWORD_ERROR,
