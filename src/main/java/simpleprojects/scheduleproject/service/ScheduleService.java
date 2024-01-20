@@ -38,7 +38,7 @@ public class ScheduleService {
     }
 
     public ResponseMessageDto selectSchedule(Long id, String password) {
-        Schedule findSchedule = null;
+        Schedule findSchedule = new Schedule();
 
         try {
             findSchedule = findById(id);
@@ -59,7 +59,7 @@ public class ScheduleService {
     }
 
     public ResponseMessageDto deleteSchedule(Long id, String password) {
-        Schedule findSchedule = null;
+        Schedule findSchedule = new Schedule();
 
         try {
             findSchedule = findById(id);
@@ -83,7 +83,7 @@ public class ScheduleService {
 
     @Transactional
     public ResponseMessageDto updateSchedule(Long id, RequestDto requestDto) {
-        Schedule findSchedule = null;
+        Schedule findSchedule = new Schedule();
 
         try {
             findSchedule = findById(id);
