@@ -16,6 +16,8 @@ https://planet-napkin-8c4.notion.site/API-49030d7ae6d74699b06add906cbff82e?pvs=4
 
 ## ERD
 
+![사진2](https://github.com/gloz0315/scheduleProject/assets/80665963/40c91699-c7f6-49c2-b6ac-b22c7acc369f)
+
 ---
 
 ## 요구사항 
@@ -47,10 +49,6 @@ https://planet-napkin-8c4.notion.site/API-49030d7ae6d74699b06add906cbff82e?pvs=4
 - [x] `선택한 일정 수정` 및 `삭제 요청` 시 비밀번호가 일치하지 않을 경우 `API 요청 실패(예외상황`)에 대해 판단할 수 있는 `Status Code, Error 메시지`등의 정보를 반환합니다.
 
 - [x] `일정 생성` 및 `일정 조회` 시 Status Code 의 정보를 반환합니다.
-
----
-
-## 기능 목록
 
 
 
