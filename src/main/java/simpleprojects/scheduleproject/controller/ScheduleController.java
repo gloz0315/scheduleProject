@@ -41,8 +41,8 @@ public class ScheduleController {
     }
 
     // id값과 비밀번호를 통해서 선택한 일정을 삭제한다.
-    @DeleteMapping("/schedules")
-    public ResponseMessageDto deleteSchedule(@RequestParam("id") Long id, @RequestParam("password") String password) {
+    @DeleteMapping("/schedules/{id}")
+    public ResponseMessageDto deleteSchedule(@PathVariable("id") Long id, @RequestParam("password") String password) {
         return scheduleService.deleteSchedule(id,password);
     }
 }
