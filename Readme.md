@@ -16,7 +16,7 @@ https://planet-napkin-8c4.notion.site/API-49030d7ae6d74699b06add906cbff82e?pvs=4
 
 ## ERD
 
-![사진2](https://github.com/gloz0315/scheduleProject/assets/80665963/40c91699-c7f6-49c2-b6ac-b22c7acc369f)
+![사진1](https://github.com/gloz0315/scheduleProject/assets/80665963/8cd7c0ef-5fc8-48ba-9052-22c61ba40233)
 
 ---
 
